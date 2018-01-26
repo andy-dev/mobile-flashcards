@@ -7,6 +7,8 @@ import { Constants } from 'expo'
 import { purple } from "./utils/colors";
 import { TabNavigator, StackNavigator, DrawerNavigator } from 'react-navigation'
 import { FontAwesome, Ionicons} from '@expo/vector-icons'
+import NewDeck from './components/NewDeck'
+import DeckList from './components/DeckList'
 
 function FlashCardsStatusBar({backgroundColor, ...props}){
   return (
@@ -16,21 +18,6 @@ function FlashCardsStatusBar({backgroundColor, ...props}){
   )
 }
 
-function DeckList(){
-  return(
-    <View>
-      <Text>DeckList</Text>
-    </View>
-  )
-}
-
-function NewDeck(){
-  return(
-    <View>
-      <Text>New Deck</Text>
-    </View>
-  )
-}
 
 const Tabs = TabNavigator({
   DeckList: {
