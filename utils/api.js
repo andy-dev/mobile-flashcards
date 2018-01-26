@@ -3,6 +3,17 @@ import { AsyncStorage } from 'react-native'
 
 export const FLASHCARDS_STORAGE_KEY = 'flashcards:mobile'
 
+
+export function fetchAllDecks(){
+  return AsyncStorage.getItem(FLASHCARDS_STORAGE_KEY)
+    .then((results) =>{
+      const data = JSON.parse(results)
+      return data
+    })
+}
+
+
+
 export function submitNewDeck ({ entry, key }) {
   return AsyncStorage.mergeItem(FLASHCARDS_STORAGE_KEY, JSON.stringify({
     [key]: entry
