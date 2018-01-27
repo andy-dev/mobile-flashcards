@@ -61,7 +61,11 @@ class DeckList extends Component{
             <Text>{JSON.stringify(this.props.decks)}</Text>
             <Text>{this.props.decks[key].title}</Text>
             <RemoveDeckBtn onPress={()=>{this.removeDeckFromList(key)}} />
-            <GoToDeck onPress={()=>this.props.navigation.navigate('Deck')}/>
+            <GoToDeck onPress={()=>this.props.navigation
+              .navigate('Deck', {
+                deckId: key,
+                title:this.props.decks[key].title
+              })}/>
 
           </View>
         )
