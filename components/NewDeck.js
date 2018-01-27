@@ -4,8 +4,11 @@ import {submitNewDeck, removeDeck, clearAllDecks} from "../utils/api";
 import {connect} from 'react-redux'
 import {addDeck} from "../actions/index";
 import {purple, white} from "../utils/colors";
+import {StackNavigator} from "react-navigation"
 
 var cuid = require('cuid');
+
+
 
 function SubmitBtn({onPress}){
   return (
@@ -72,6 +75,7 @@ class NewDeck extends Component{
             style={styles.input}
             onChangeText={this.handleTextChange}
           />
+
         </View>
 
         <SubmitBtn onPress={this.submit}/>

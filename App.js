@@ -9,6 +9,7 @@ import { TabNavigator, StackNavigator, DrawerNavigator } from 'react-navigation'
 import { FontAwesome, Ionicons} from '@expo/vector-icons'
 import NewDeck from './components/NewDeck'
 import DeckList from './components/DeckList'
+import Deck from "./components/Deck";
 
 function FlashCardsStatusBar({backgroundColor, ...props}){
   return (
@@ -54,13 +55,28 @@ const Tabs = TabNavigator({
   }
 });
 
+const MainNavigation = StackNavigator({
+  Home:{
+    screen: Tabs,
+  },
+  Deck:{
+    screen: Deck,
+    navigationOptions:{
+      headerTintColor: white,
+      headerStyle:{
+        backgroundColor: purple
+      }
+    }
+  }
+})
+
 export default class App extends React.Component {
   render() {
     return (
       <Provider store={createStore(reducer)}>
         <View style={{flex:1}}>
           <FlashCardsStatusBar backgroundColor={purple} barStyle='light-content'/>
-            <Tabs/>
+          <MainNavigation/>
         </View>
       </Provider>
     )

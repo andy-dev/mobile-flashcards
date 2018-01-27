@@ -5,6 +5,8 @@ import {receiveAllDecks, removeDeckById} from "../actions/index";
 import {fetchAllDecks} from "../utils/api";
 import {removeDeck} from "../utils/api";
 import {purple, white} from "../utils/colors";
+import Deck from './Deck'
+
 
 
 function RemoveDeckBtn({onPress}){
@@ -17,27 +19,34 @@ function RemoveDeckBtn({onPress}){
   )
 }
 
+function GoToDeck({onPress}){
+  return (
+    <TouchableOpacity
+      style={Platform.OS === 'ios' ? styles.iosSubmitBtn : styles.androidSubmitBtn}
+      onPress={onPress}>
+      <Text style={styles.submitBtnText}>Go To Deck</Text>
+    </TouchableOpacity>
+  )
+}
+
+
 class DeckList extends Component{
 
 
-
   componentDidMount(){
-    const {dispatch} = this.props
+    const {dispatch} = this.props;
 
     fetchAllDecks()
       .then((decks)=> dispatch(receiveAllDecks(decks)))
   }
 
   removeDeckFromList = (key)=>{
-
-    console.log(key)
-    console.log("remove iteme")
     // //update redux
     this.props.dispatch(removeDeckById(key))
 
     //update db
     removeDeck(key)
-  }
+  };
 
   render(){
 
@@ -52,6 +61,8 @@ class DeckList extends Component{
             <Text>{JSON.stringify(this.props.decks)}</Text>
             <Text>{this.props.decks[key].title}</Text>
             <RemoveDeckBtn onPress={()=>{this.removeDeckFromList(key)}} />
+            <GoToDeck onPress={()=>this.props.navigation.navigate('Deck')}/>
+
           </View>
         )
       })
