@@ -13,7 +13,6 @@ export function fetchAllDecks(){
 }
 
 
-
 export function submitNewDeck ({ entry, key }) {
   return AsyncStorage.mergeItem(FLASHCARDS_STORAGE_KEY, JSON.stringify({
     [key]: entry
@@ -29,3 +28,5 @@ export function removeDeck (key) {
       AsyncStorage.setItem(FLASHCARDS_STORAGE_KEY, JSON.stringify(data))
     })
 }
+
+

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, TextInput, KeyboardAvoidingView, StyleSheet, TouchableOpacity, Platform} from 'react-native'
-import {submitNewDeck, removeDeck} from "../utils/api";
+import {submitNewDeck, removeDeck, clearAllDecks} from "../utils/api";
 import {connect} from 'react-redux'
 import {addDeck} from "../actions/index";
 import {purple, white} from "../utils/colors";
@@ -18,6 +18,8 @@ function SubmitBtn({onPress}){
 }
 
 
+
+
 class NewDeck extends Component{
   state = {
     input: ''
@@ -25,14 +27,16 @@ class NewDeck extends Component{
 
   submit = () =>{
     const key = cuid();
-    const entry = this.state
+    let entry = {
+      title: this.state.input,
+      questions: []
+    }
 
     this.setState(()=>({
       input: ''
     }))
 
     // Update Redux
-
     this.props.dispatch(addDeck({
       [key]: entry
     }))
@@ -43,9 +47,8 @@ class NewDeck extends Component{
 
     submitNewDeck({key, entry})
 
-
-
   };
+
 
   handleTextChange = (input) => {
     this.setState(()=>({
@@ -72,6 +75,7 @@ class NewDeck extends Component{
         </View>
 
         <SubmitBtn onPress={this.submit}/>
+
       </KeyboardAvoidingView>
     )
   }
@@ -118,3 +122,7 @@ const styles = StyleSheet.create({
 });
 
 export default connect()(NewDeck);
+
+
+
+
