@@ -23,7 +23,8 @@ export function submitNewQuestion (key, entry) {
   return AsyncStorage.getItem(FLASHCARDS_STORAGE_KEY)
     .then((results) => {
       const data = JSON.parse(results)
-      data[key].question.push(entry)
+      data[key].questions.push(entry)
+      console.log(data)
       AsyncStorage.setItem(FLASHCARDS_STORAGE_KEY, JSON.stringify(data))
     })
 }

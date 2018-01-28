@@ -50,7 +50,7 @@ class AddQuestion extends Component{
 
 
     //Update DB
-    // submitNewQuestion(deckId, entry)
+    submitNewQuestion(deckId, entry)
 
 
 
@@ -78,7 +78,7 @@ class AddQuestion extends Component{
     const { title } = navigation.state.params
 
     return {
-      title: "Add Question"
+      title: "Add Card"
     }
 
   }
