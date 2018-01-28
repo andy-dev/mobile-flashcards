@@ -10,6 +10,7 @@ import { FontAwesome, Ionicons} from '@expo/vector-icons'
 import NewDeck from './components/NewDeck'
 import DeckList from './components/DeckList'
 import Deck from "./components/Deck";
+import AddQuestion from "./components/AddQuestion";
 
 function FlashCardsStatusBar({backgroundColor, ...props}){
   return (
@@ -61,6 +62,15 @@ const MainNavigation = StackNavigator({
   },
   Deck:{
     screen: Deck,
+    navigationOptions:{
+      headerTintColor: white,
+      headerStyle:{
+        backgroundColor: purple
+      }
+    }
+  },
+  AddQuestion:{
+    screen: AddQuestion,
     navigationOptions:{
       headerTintColor: white,
       headerStyle:{

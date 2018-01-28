@@ -41,13 +41,17 @@ class Deck extends Component{
 
   render(){
 
-    const { deck } = this.props
+    const { deckId, deck } = this.props
 
     return (
      <View style={styles.container}>
        <Text>Title: {deck.title}</Text>
        <Text>Num of Cards: {deck.questions.length} cards</Text>
-       <AddCardBtn />
+
+       <AddCardBtn onPress={()=>this.props.navigation
+         .navigate('AddQuestion', {
+           deckId: deckId,
+         })}/>
        <StartQuizBtn/>
      </View>
     )
