@@ -19,6 +19,15 @@ export function submitNewDeck ({ entry, key }) {
   }))
 }
 
+export function submitNewQuestion (key, entry) {
+  return AsyncStorage.getItem(FLASHCARDS_STORAGE_KEY)
+    .then((results) => {
+      const data = JSON.parse(results)
+      data[key].question.push(entry)
+      AsyncStorage.setItem(FLASHCARDS_STORAGE_KEY, JSON.stringify(data))
+    })
+}
+
 export function removeDeck (key) {
   return AsyncStorage.getItem(FLASHCARDS_STORAGE_KEY)
     .then((results) => {

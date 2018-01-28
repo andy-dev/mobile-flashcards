@@ -58,7 +58,6 @@ class DeckList extends Component{
       showThis = Object.keys(this.props.decks).map((key)=>{
         return(
           <View key={key}>
-            <Text>{JSON.stringify(this.props.decks)}</Text>
             <Text>{this.props.decks[key].title}</Text>
             <RemoveDeckBtn onPress={()=>{this.removeDeckFromList(key)}} />
             <GoToDeck onPress={()=>this.props.navigation

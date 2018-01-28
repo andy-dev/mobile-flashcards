@@ -44,7 +44,7 @@ class NewDeck extends Component{
       [key]: entry
     }))
 
-    // Navigate to Add New Card
+
 
     // Save New Deck to DB
 

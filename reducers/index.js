@@ -1,6 +1,8 @@
-import { RECEIVE_DECKS, ADD_DECK, DELETE_DECK } from '../actions'
+import { RECEIVE_DECKS, ADD_DECK, DELETE_DECK, ADD_QUESTION } from '../actions'
+
 
 function entries (state = {}, action) {
+
   switch (action.type) {
     case RECEIVE_DECKS :
       return {
@@ -12,6 +14,16 @@ function entries (state = {}, action) {
         ...state,
         ...action.deck
       };
+    case ADD_QUESTION :
+      return {
+        ...state,
+        [action.id]:{
+          ...state[action.id],
+          questions: [ ...state[action.id].questions , action.question]
+        }
+
+      }
+
     case DELETE_DECK :
       return Object.assign({}, Object.keys(state).reduce(( accum, key)=>{
         if(key !== action.id){
