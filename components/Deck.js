@@ -52,7 +52,10 @@ class Deck extends Component{
          .navigate('AddQuestion', {
            deckId: deckId,
          })}/>
-       <StartQuizBtn/>
+       <StartQuizBtn onPress={()=>this.props.navigation
+         .navigate('Quiz', {
+           deckId: deckId,
+         })}/>
      </View>
     )
   }
