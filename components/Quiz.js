@@ -152,7 +152,6 @@ class Quiz extends Component{
             <Text>Quiz {currentQuestionDisplayed + 1}/{totalNumberOfCards}</Text>
           </View>
 
-
           <FlipCard flip={displayingAnswer} style={styles.flipCard}>
             {/* Face Side */}
             <View style={styles.face}>
@@ -184,11 +183,6 @@ class Quiz extends Component{
               </View>
             </View>
           </FlipCard>
-
-
-
-
-
         </View>
         )
     }
