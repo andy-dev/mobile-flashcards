@@ -1,14 +1,11 @@
 import React, { Component } from 'react'
 import { View, Text, TextInput, KeyboardAvoidingView, StyleSheet, TouchableOpacity, Platform} from 'react-native'
-import {submitNewDeck, removeDeck, clearAllDecks} from "../utils/api";
+import {submitNewDeck } from "../utils/api";
 import {connect} from 'react-redux'
 import {addDeck} from "../actions/index";
 import {purple, white} from "../utils/colors";
-import {StackNavigator} from "react-navigation"
 
 var cuid = require('cuid');
-
-
 
 function SubmitBtn({onPress}){
   return (
@@ -21,8 +18,6 @@ function SubmitBtn({onPress}){
 }
 
 
-
-
 class NewDeck extends Component{
   state = {
     input: ''
@@ -33,23 +28,19 @@ class NewDeck extends Component{
     let entry = {
       title: this.state.input,
       questions: []
-    }
+    };
 
     this.setState(()=>({
       input: ''
-    }))
+    }));
 
     // Update Redux
     this.props.dispatch(addDeck({
       [key]: entry
-    }))
-
-
+    }));
 
     // Save New Deck to DB
-
     submitNewDeck({key, entry})
-
   };
 
 
@@ -60,26 +51,22 @@ class NewDeck extends Component{
   };
 
 
-
   render(){
-
     const {input} = this.state;
     return (
       <KeyboardAvoidingView behavior='padding' style={styles.container}>
-
-        <View>
-          <Text>NewDeck</Text>
-          <Text>Title of new deck?</Text>
-          <TextInput
-            value={input}
-            style={styles.input}
-            onChangeText={this.handleTextChange}
-          />
-
+        <View style={styles.row}>
+          <Text style={styles.mainHeader}>ADD DECK</Text>
         </View>
-
+        <View style={styles.row}>
+          <Text>Title of new deck?</Text>
+        </View>
+        <TextInput
+          value={input}
+          style={styles.input}
+          onChangeText={this.handleTextChange}
+        />
         <SubmitBtn onPress={this.submit}/>
-
       </KeyboardAvoidingView>
     )
   }
@@ -89,9 +76,16 @@ const styles = StyleSheet.create({
   container:{
     flex:1,
     alignItems: 'center',
-    justifyContent:'center',
     padding:20,
     backgroundColor:white,
+  },
+  row:{
+    margin: 10,
+    alignItems: 'center',
+  },
+  mainHeader:{
+    fontSize: 30,
+    alignItems: 'center'
   },
   input:{
     width:200,

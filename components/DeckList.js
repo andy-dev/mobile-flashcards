@@ -70,7 +70,7 @@ class DeckList extends Component{
       showThis = Object.keys(this.props.decks).map((key)=>{
         return (
           <View key={key} style={styles.deckContainer}>
-            <View style={[styles.box, {flex:4}]}>
+            <View style={[styles.box, {flex:5}]}>
               <GoToDeckBtn title={this.props.decks[key].title}
                            cardLength={this.props.decks[key].questions.length}
                            onPress={()=>this.props.navigation
@@ -119,14 +119,16 @@ const styles = StyleSheet.create({
     padding: 60,
   },
   box: {
-    height: 70,
-    width: 50,
-    backgroundColor: '#e76e63',
+    height: 100,
     margin: 10,
+    padding: 5,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   deleteBtn:{
-    height: 70,
-    backgroundColor: 'red',
+    height: 100,
+    padding: 5,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -150,7 +152,7 @@ const styles = StyleSheet.create({
   iosSubmitBtn:{
     backgroundColor: '#e76e63',
     padding: 10,
-    height:45,
+
     marginLeft: 40,
     marginRight:40,
   },
@@ -159,7 +161,6 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingLeft: 30,
     paddingRight: 30,
-    height: 45,
     justifyContent: 'center',
     alignItems:'center'
   },
