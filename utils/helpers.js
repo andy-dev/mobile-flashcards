@@ -1,16 +1,10 @@
 import React from 'react'
 import { View, StyleSheet, AsyncStorage } from 'react-native'
 import { FontAwesome, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons'
-import { red, orange, blue, lightPurp, pink, white } from './colors'
 import { Notifications, Permissions } from 'expo'
 
-export const FLASHCARDS_NOTIFICATIONS_KEY = 'flashcards:notifications'
+export const FLASHCARDS_NOTIFICATIONS_KEY = 'flashcards:notifications';
 
-export function getDailyReminderValue () {
-  return {
-    today: "👋 Don't forget to study  today!"
-  }
-}
 
 export function clearLocalNotification () {
   return AsyncStorage.removeItem(FLASHCARDS_NOTIFICATIONS_KEY)
@@ -45,10 +39,10 @@ export function setLocalNotification () {
             if (status === 'granted') {
               Notifications.cancelAllScheduledNotificationsAsync()
 
-              let tomorrow = new Date()
-              tomorrow.setDate(tomorrow.getDate() + 1)
-              tomorrow.setHours(20)
-              tomorrow.setMinutes(0)
+              let tomorrow = new Date();
+              tomorrow.setDate(tomorrow.getDate() + 1);
+              tomorrow.setHours(20);
+              tomorrow.setMinutes(0);
 
               Notifications.scheduleLocalNotificationAsync(
                 createNotification(),
@@ -57,7 +51,6 @@ export function setLocalNotification () {
                   repeat: 'day',
                 }
               )
-
               AsyncStorage.setItem(FLASHCARDS_NOTIFICATIONS_KEY, JSON.stringify(true))
             }
           })
@@ -65,26 +58,6 @@ export function setLocalNotification () {
     })
 }
 
-const styles = StyleSheet.create({
-  iconContainer: {
-    padding: 5,
-    borderRadius: 8,
-    width: 50,
-    height: 50,
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginRight: 20
-  },
-});
 
 
 
-
-
-
-
-export function timeToString (time = Date.now()) {
-  const date = new Date(time)
-  const todayUTC = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
-  return todayUTC.toISOString().split('T')[0]
-}

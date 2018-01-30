@@ -34,7 +34,7 @@ class Deck extends Component{
   };
 
   startQuiz(deckId){
-    clearLocalNotification()
+    clearLocalNotification();
     this.props.navigation.navigate('Quiz', {deckId: deckId, })
   }
 
