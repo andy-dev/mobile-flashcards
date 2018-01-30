@@ -21,7 +21,6 @@ function SubmitQuestionBtn({onPress}){
 
 
 class AddQuestion extends Component{
-
   state = {
     answer: '',
     question: ''
@@ -32,29 +31,21 @@ class AddQuestion extends Component{
     let entry = {
       question: this.state.question,
       answer: this.state.answer,
-    }
+    };
 
-    let key = this.props.deckId
+    let key = this.props.deckId;
 
     this.setState(()=>({
       answer: '',
       question: ''
-    }))
+    }));
 
-    //Update Redux
-
-    // console.log("id", this.props.deckId)
-    // console.log("question Obj", answerQuestionPair)
-
+    // Update Redux
     this.props.dispatch(addQuestionToDeck(key, entry))
-
 
     //Update DB
     submitNewQuestion(deckId, entry)
-
-
-
-  }
+  };
 
   handleQuestionChange = (questionInput) => {
     this.setState((state)=>{
@@ -76,27 +67,24 @@ class AddQuestion extends Component{
 
   static navigationOptions = ({navigation}) =>{
     const { title } = navigation.state.params
-
     return {
       title: "Add Card"
     }
-
-  }
+  };
 
   render(){
     const {answer, question} = this.state;
-    const { deckId, deck } = this.props
+    const { deckId, deck } = this.props;
 
     return (
       <View style={styles.container}>
-        <Text>Hello from New question: {deckId}</Text>
-        <Text>Question</Text>
+        <Text style={{fontSize:20}}>Question</Text>
         <TextInput
           style={styles.input}
           value={question}
           onChangeText={this.handleQuestionChange}/>
 
-        <Text>Answer</Text>
+        <Text style={{fontSize:20}}>Answer</Text>
         <TextInput
           style={styles.input}
           value={answer}
@@ -147,15 +135,12 @@ const styles = StyleSheet.create({
   }
 });
 
-// we get passed state and props, that has a navigation key
 function mapStateToProps(state, {navigation}){
-  const { deckId } = navigation.state.params
-
+  const { deckId } = navigation.state.params;
   return {
     deckId,
     deck: state[deckId]
   }
-
 }
 
 

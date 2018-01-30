@@ -1,11 +1,7 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, KeyboardAvoidingView, StyleSheet, TouchableOpacity, Platform} from 'react-native'
-import {submitNewDeck, removeDeck, clearAllDecks} from "../utils/api";
+import { View, Text,  StyleSheet, TouchableOpacity, Platform} from 'react-native'
 import {connect} from 'react-redux'
-import {addDeck} from "../actions/index";
 import {purple, white} from "../utils/colors";
-import {StackNavigator} from "react-navigation"
-
 
 function AddCardBtn({onPress}){
   return (
@@ -29,33 +25,32 @@ function StartQuizBtn({onPress}){
 
 
 class Deck extends Component{
-
   static navigationOptions = ({navigation}) =>{
     const { title } = navigation.state.params
-
     return {
       title: title
     }
-
-  }
+  };
 
   render(){
-
-    const { deckId, deck } = this.props
+    const { deckId, deck } = this.props;
 
     return (
      <View style={styles.container}>
-       <Text>Title: {deck.title}</Text>
-       <Text>Num of Cards: {deck.questions.length} cards</Text>
-
-       <AddCardBtn onPress={()=>this.props.navigation
-         .navigate('AddQuestion', {
-           deckId: deckId,
-         })}/>
-       <StartQuizBtn onPress={()=>this.props.navigation
-         .navigate('Quiz', {
-           deckId: deckId,
-         })}/>
+       <Text style={styles.mainHeader}>Title: {deck.title}</Text>
+       <Text style={{fontSize:20}}>Num of Cards: {deck.questions.length} cards</Text>
+       <View style={styles.row}>
+         <AddCardBtn onPress={()=>this.props.navigation
+           .navigate('AddQuestion', {
+             deckId: deckId,
+           })}/>
+       </View>
+       <View style={styles.row}>
+         <StartQuizBtn onPress={()=>this.props.navigation
+           .navigate('Quiz', {
+             deckId: deckId,
+           })}/>
+       </View>
      </View>
     )
   }
@@ -67,8 +62,16 @@ const styles = StyleSheet.create({
     backgroundColor:white,
     padding: 15,
   },
+  row:{
+    margin: 10,
+    alignItems: 'center',
+  },
+  mainHeader:{
+    fontSize: 30,
+    alignItems: 'center'
+  },
   iosSubmitBtn:{
-  backgroundColor: purple,
+    backgroundColor: purple,
     padding: 20,
     borderRadius: 7,
     height:45,
@@ -95,15 +98,12 @@ const styles = StyleSheet.create({
 
 // we get passed state and props, that has a navigation key
 function mapStateToProps(state, {navigation}){
-  const { deckId } = navigation.state.params
-
+  const { deckId } = navigation.state.params;
   return {
     deckId,
     deck: state[deckId]
   }
-
 }
-
 
 export default connect(mapStateToProps)(Deck);
 

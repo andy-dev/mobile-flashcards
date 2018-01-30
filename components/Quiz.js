@@ -155,7 +155,7 @@ class Quiz extends Component{
               </View>
             : <View>
                 <Text style={{fontSize:20}}>Answer:</Text>
-                <Text style={{fontSize:20}}>{deck.questions[0].question}</Text>
+                <Text style={{fontSize:20}}>{deck.questions[0].answer}</Text>
               </View>}
 
           <View style={styles.row}>
