@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, Platform, StyleSheet, TouchableOpacity, FlatList} from 'react-native'
+import { View, Text, Platform, StyleSheet, TouchableOpacity, ScrollView} from 'react-native'
 import {connect} from 'react-redux'
 import {receiveAllDecks, removeDeckById} from "../actions/index";
 import {fetchAllDecks} from "../utils/api";
@@ -33,14 +33,12 @@ function GoToDeckBtn({onPress, title, cardLength}){
         <Text style={styles.submitBtnText}>{title}</Text>
         <Text style={styles.submitBtnText}>{cardLength} cards</Text>
       </View>
-
     </TouchableOpacity>
   )
 }
 
 
 class DeckList extends Component{
-
 
   componentDidMount(){
     const {dispatch} = this.props;
@@ -49,7 +47,7 @@ class DeckList extends Component{
       .then((decks)=> dispatch(receiveAllDecks(decks)))
   }
 
-  removeDeckFromList = (key)=>{
+  removeDeckFromList = (key) => {
     // //update redux
     this.props.dispatch(removeDeckById(key));
 
@@ -61,37 +59,41 @@ class DeckList extends Component{
     let showThis = null;
 
     if(JSON.stringify(this.props.decks) === '{}'){
-      showThis = <Text>No Decks have been added</Text>
+      showThis =
+        (
+          <View style={styles.row}>
+            <Text style={styles.noDeckAddedMssg}>No Decks have been added</Text>
+          </View>
+
+        )
     } else {
       showThis = Object.keys(this.props.decks).map((key)=>{
-        return(
-
+        return (
           <View key={key} style={styles.deckContainer}>
             <View style={[styles.box, {flex:4}]}>
-              <GoToDeckBtn title={this.props.decks[key].title} cardLength={this.props.decks[key].questions.length} onPress={()=>this.props.navigation
+              <GoToDeckBtn title={this.props.decks[key].title}
+                           cardLength={this.props.decks[key].questions.length}
+                           onPress={()=>this.props.navigation
               .navigate('Deck', {
                 deckId: key,
                 title:this.props.decks[key].title
               })}/></View>
-            <View style={[styles.box, {flex:1}]}><RemoveDeckBtn onPress={()=>{this.removeDeckFromList(key)}} /></View>
+            <View style={[styles.box, {flex:1}]}>
+              <RemoveDeckBtn onPress={()=>{this.removeDeckFromList(key)}} />
+            </View>
           </View>
-
         )
       })
     }
 
-
     return(
       <View style={styles.container}>
-
         <View style={styles.row}>
           <Text style={styles.mainHeader}>DeckList</Text>
         </View>
-
-
-        {showThis}
-
-
+        <ScrollView>
+          {showThis}
+        </ScrollView>
       </View>
     )
   }
@@ -108,6 +110,13 @@ const styles = StyleSheet.create({
   },
   deckContainer:{
     flexDirection:'row',
+  },
+  noDeckAddedMssg:{
+    color: white,
+    justifyContent: 'center',
+    alignItems: 'center',
+    fontSize: 20,
+    padding: 60,
   },
   box: {
     height: 70,
@@ -141,7 +150,6 @@ const styles = StyleSheet.create({
   iosSubmitBtn:{
     backgroundColor: '#e76e63',
     padding: 10,
-    borderRadius: 7,
     height:45,
     marginLeft: 40,
     marginRight:40,
@@ -152,7 +160,6 @@ const styles = StyleSheet.create({
     paddingLeft: 30,
     paddingRight: 30,
     height: 45,
-    borderRadius:2,
     justifyContent: 'center',
     alignItems:'center'
   },
