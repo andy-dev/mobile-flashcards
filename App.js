@@ -12,6 +12,7 @@ import DeckList from './components/DeckList'
 import Deck from "./components/Deck";
 import AddQuestion from "./components/AddQuestion";
 import Quiz from "./components/Quiz";
+import {setLocalNotification} from "./utils/helpers";
 
 function FlashCardsStatusBar({backgroundColor, ...props}){
   return (
@@ -91,6 +92,10 @@ const MainNavigation = StackNavigator({
 })
 
 export default class App extends React.Component {
+
+  componentDidMount(){
+    setLocalNotification()
+  }
   render() {
     return (
       <Provider store={createStore(reducer)}>

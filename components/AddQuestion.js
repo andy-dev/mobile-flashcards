@@ -45,6 +45,9 @@ class AddQuestion extends Component{
 
     //Update DB
     submitNewQuestion(deckId, entry)
+
+    // Navigate to Deck
+    this.props.navigation.goBack()
   };
 
   handleQuestionChange = (questionInput) => {
@@ -77,7 +80,7 @@ class AddQuestion extends Component{
     const { deckId, deck } = this.props;
 
     return (
-      <View style={styles.container}>
+      <KeyboardAvoidingView behavior='padding' style={styles.container}>
         <Text style={{fontSize:20}}>Question</Text>
         <TextInput
           style={styles.input}
@@ -91,7 +94,7 @@ class AddQuestion extends Component{
           onChangeText={this.handleAnswerChange}/>
 
         <SubmitQuestionBtn onPress={()=>{this.submit(deckId)}}/>
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }

@@ -40,7 +40,13 @@ class NewDeck extends Component{
     }));
 
     // Save New Deck to DB
-    submitNewDeck({key, entry})
+    submitNewDeck({key, entry});
+
+    // Navigate to Deck
+    this.props.navigation.navigate('Deck', {
+      deckId: key,
+      title: this.state.input
+    })
   };
 
 

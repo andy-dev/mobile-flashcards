@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { View, Text,  StyleSheet, TouchableOpacity, Platform} from 'react-native'
 import {connect} from 'react-redux'
 import {purple, white} from "../utils/colors";
+import {clearLocalNotification} from "../utils/helpers";
 
 function AddCardBtn({onPress}){
   return (
@@ -32,6 +33,11 @@ class Deck extends Component{
     }
   };
 
+  startQuiz(deckId){
+    clearLocalNotification()
+    this.props.navigation.navigate('Quiz', {deckId: deckId, })
+  }
+
   render(){
     const { deckId, deck } = this.props;
 
@@ -46,10 +52,7 @@ class Deck extends Component{
            })}/>
        </View>
        <View style={styles.row}>
-         <StartQuizBtn onPress={()=>this.props.navigation
-           .navigate('Quiz', {
-             deckId: deckId,
-           })}/>
+         <StartQuizBtn onPress={ () => this.startQuiz(deckId)}/>
        </View>
      </View>
     )
