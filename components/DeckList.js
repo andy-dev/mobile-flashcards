@@ -1,30 +1,39 @@
 import React, { Component } from 'react'
-import { View, Text, Platform, StyleSheet, TouchableOpacity} from 'react-native'
+import { View, Text, Platform, StyleSheet, TouchableOpacity, FlatList} from 'react-native'
 import {connect} from 'react-redux'
 import {receiveAllDecks, removeDeckById} from "../actions/index";
 import {fetchAllDecks} from "../utils/api";
 import {removeDeck} from "../utils/api";
-import {purple, white} from "../utils/colors";
+import {purple, white, orange} from "../utils/colors";
 import Deck from './Deck'
-
+import { Ionicons } from '@expo/vector-icons'
 
 
 function RemoveDeckBtn({onPress}){
   return (
     <TouchableOpacity
-      style={Platform.OS === 'ios' ? styles.iosSubmitBtn : styles.androidSubmitBtn}
+      style={styles.deleteBtn}
       onPress={onPress}>
-      <Text style={styles.submitBtnText}>Remove Deck</Text>
+      <Text style={styles.submitBtnText}>
+        <Ionicons
+          name={Platform.OS === 'ios' ? 'ios-trash' : 'md-trash'}
+          size={45}
+        />
+      </Text>
     </TouchableOpacity>
   )
 }
 
-function GoToDeck({onPress}){
+function GoToDeckBtn({onPress, title, cardLength}){
   return (
     <TouchableOpacity
       style={Platform.OS === 'ios' ? styles.iosSubmitBtn : styles.androidSubmitBtn}
       onPress={onPress}>
-      <Text style={styles.submitBtnText}>Go To Deck</Text>
+      <View>
+        <Text style={styles.submitBtnText}>{title}</Text>
+        <Text style={styles.submitBtnText}>{cardLength} cards</Text>
+      </View>
+
     </TouchableOpacity>
   )
 }
@@ -42,14 +51,13 @@ class DeckList extends Component{
 
   removeDeckFromList = (key)=>{
     // //update redux
-    this.props.dispatch(removeDeckById(key))
+    this.props.dispatch(removeDeckById(key));
 
     //update db
     removeDeck(key)
   };
 
   render(){
-
     let showThis = null;
 
     if(JSON.stringify(this.props.decks) === '{}'){
@@ -57,27 +65,32 @@ class DeckList extends Component{
     } else {
       showThis = Object.keys(this.props.decks).map((key)=>{
         return(
-          <View key={key}>
-            <Text>{this.props.decks[key].title}</Text>
-            <RemoveDeckBtn onPress={()=>{this.removeDeckFromList(key)}} />
-            <GoToDeck onPress={()=>this.props.navigation
+
+          <View key={key} style={styles.deckContainer}>
+            <View style={[styles.box, {flex:4}]}>
+              <GoToDeckBtn title={this.props.decks[key].title} cardLength={this.props.decks[key].questions.length} onPress={()=>this.props.navigation
               .navigate('Deck', {
                 deckId: key,
                 title:this.props.decks[key].title
-              })}/>
-
+              })}/></View>
+            <View style={[styles.box, {flex:1}]}><RemoveDeckBtn onPress={()=>{this.removeDeckFromList(key)}} /></View>
           </View>
+
         )
       })
     }
 
 
     return(
-      <View>
-        <Text>DeckList</Text>
-        <Text>{JSON.stringify(this.props.decks)}</Text>
+      <View style={styles.container}>
+
+        <View style={styles.row}>
+          <Text style={styles.mainHeader}>DeckList</Text>
+        </View>
+
 
         {showThis}
+
 
       </View>
     )
@@ -87,10 +100,36 @@ class DeckList extends Component{
 const styles = StyleSheet.create({
   container:{
     flex:1,
+    backgroundColor: purple,
+  },
+  row:{
+    margin: 10,
     alignItems: 'center',
-    justifyContent:'center',
-    padding:20,
-    backgroundColor:white,
+  },
+  deckContainer:{
+    flexDirection:'row',
+  },
+  box: {
+    height: 70,
+    width: 50,
+    backgroundColor: '#e76e63',
+    margin: 10,
+  },
+  deleteBtn:{
+    height: 70,
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  headerView:{
+    backgroundColor: purple,
+    alignItems: 'center',
+    padding: 30,
+  },
+  mainHeader:{
+    fontSize: 30,
+    color: white,
+    alignItems: 'center'
   },
   input:{
     width:200,
@@ -100,7 +139,7 @@ const styles = StyleSheet.create({
     margin: 50
   },
   iosSubmitBtn:{
-    backgroundColor: purple,
+    backgroundColor: '#e76e63',
     padding: 10,
     borderRadius: 7,
     height:45,
@@ -108,7 +147,7 @@ const styles = StyleSheet.create({
     marginRight:40,
   },
   androidSubmitBtn:{
-    backgroundColor: purple,
+    backgroundColor: '#e76e63',
     padding: 10,
     paddingLeft: 30,
     paddingRight: 30,
@@ -131,3 +170,6 @@ function mapStateToProps(decks){
 }
 
 export default connect(mapStateToProps)(DeckList)
+
+
+
