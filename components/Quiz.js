@@ -1,12 +1,7 @@
 import React, { Component } from 'react'
-import { View, Text, TextInput, KeyboardAvoidingView, StyleSheet, TouchableOpacity, Platform} from 'react-native'
-import {submitNewDeck, removeDeck, clearAllDecks} from "../utils/api";
+import { View, Text, StyleSheet, TouchableOpacity, Platform} from 'react-native'
 import {connect} from 'react-redux'
-import {addDeck} from "../actions/index";
 import {purple, white} from "../utils/colors";
-import {StackNavigator} from "react-navigation"
-
-
 
 function ShowAnswerBtn({onPress, displayingAnswer}){
   return (
@@ -16,7 +11,6 @@ function ShowAnswerBtn({onPress, displayingAnswer}){
       {displayingAnswer === false ?
         <Text style={styles.submitBtnText}>Show Answer</Text> :
         <Text style={styles.submitBtnText}>Show Question</Text>}
-
     </TouchableOpacity>
   )
 }
@@ -64,17 +58,12 @@ function IncorrectBtn({onPress}){
 
 class Quiz extends Component{
 
-  state ={
+  state = {
     currentQuestionDisplayed: 0,
     totalNumberOfCards: this.props.deck.questions.length,
     displayingAnswer : false,
     totalCorrect: 0
-  }
-
-  goToNextQuestion = () => {
-    const { currentQuestionDisplayed, displayingAnswer, totalCorrect } = this.state
-    console.log("next question")
-  }
+  };
 
   correctAnswer = () => {
     const { currentQuestionDisplayed, totalCorrect } = this.state
@@ -86,64 +75,104 @@ class Quiz extends Component{
         totalCorrect: totalCorrect + 1
       }
     })
-  }
+  };
 
-  showAnswerQuestionToggle = () =>{
-    const { displayingAnswer } = this.state
+  incorrectAnswer = () => {
+    const { currentQuestionDisplayed, totalCorrect } = this.state;
+
+    this.setState((state)=>{
+
+      return {
+        ...state,
+        currentQuestionDisplayed: currentQuestionDisplayed + 1,
+        displayingAnswer: false,
+        totalCorrect: totalCorrect
+      }
+    })
+  };
+
+  showAnswerQuestionToggle = () => {
+    const { displayingAnswer } = this.state;
     this.setState((state)=>{
       return {
         ...state,
         displayingAnswer: !displayingAnswer
       }
     })
-  }
+  };
 
   static navigationOptions = ({navigation}) =>{
-    const { title } = navigation.state.params
     return {
       title: "Quiz"
     }
   };
 
   render(){
-
-    let showThis = null
-
+    let showThis = null;
     const {currentQuestionDisplayed, displayingAnswer, totalNumberOfCards, totalCorrect} = this.state
-    const { deckId, deck } = this.props
+    const { deckId, deck } = this.props;
 
-    if(currentQuestionDisplayed === totalNumberOfCards){
+    if(totalNumberOfCards === 0){
+      showThis = (
+          <View style={styles.row}>
+            <Text>No cards added</Text>
+          </View>
+        )
+    } else if(currentQuestionDisplayed === totalNumberOfCards){
       showThis =
         <View>
-          <Text>No More questions, you scored  {totalCorrect}/{totalNumberOfCards}</Text>
-          <GoToDeck onPress={()=>this.props.navigation
-            .navigate('Deck', {
-              deckId: deckId,
-              title:this.props.deck.title
-            })}/>
-          <RestartQuiz onPress={()=>this.props.navigation
-            .navigate('Quiz', {
-              deckId: deckId
-            })}/>
+          <View style={styles.row}>
+            <Text>No More questions, you scored  {totalCorrect}/{totalNumberOfCards}</Text>
+          </View>
+
+          <View style={styles.row}>
+            <GoToDeck onPress={()=>this.props.navigation
+              .navigate('Deck', {
+                deckId: deckId,
+                title:this.props.deck.title
+              })}/>
+          </View>
+
+          <View style={styles.row}>
+            <RestartQuiz onPress={()=>this.props.navigation
+              .navigate('Quiz', {
+                deckId: deckId
+              })}/>
+          </View>
         </View>
     } else {
       showThis =
         (
         <View>
-          <Text>Quiz {currentQuestionDisplayed + 1}/{totalNumberOfCards}</Text>
-          {displayingAnswer === false
-            ? <Text>Question {deck.questions[0].question}</Text>
-            : <Text>Answers {deck.questions[0].question}</Text>}
+          <View style={styles.row}>
+            <Text>Quiz {currentQuestionDisplayed + 1}/{totalNumberOfCards}</Text>
+          </View>
 
-          <ShowAnswerBtn onPress={this.showAnswerQuestionToggle} displayingAnswer={displayingAnswer} />
-          <CorrectBtn onPress={this.correctAnswer} />
-          <IncorrectBtn onPress={this.incorrectAnswer}/>
+          {displayingAnswer === false
+            ? <View>
+                <Text style={{fontSize:20}}>Question:</Text>
+                <Text style={{fontSize:20}}>{deck.questions[0].question}</Text>
+              </View>
+            : <View>
+                <Text style={{fontSize:20}}>Answer:</Text>
+                <Text style={{fontSize:20}}>{deck.questions[0].question}</Text>
+              </View>}
+
+          <View style={styles.row}>
+            <ShowAnswerBtn onPress={this.showAnswerQuestionToggle} displayingAnswer={displayingAnswer} />
+          </View>
+          <View style={styles.row}>
+            <CorrectBtn onPress={this.correctAnswer} />
+          </View>
+          <View style={styles.row}>
+            <IncorrectBtn onPress={this.incorrectAnswer}/>
+          </View>
+
         </View>
         )
     }
 
     return (
-
       <View style={styles.container}>
         {showThis}
       </View>
@@ -156,6 +185,10 @@ const styles = StyleSheet.create({
     flex:1,
     backgroundColor:white,
     padding: 15,
+  },
+  row:{
+    margin: 10,
+    alignItems: 'center',
   },
   iosSubmitBtn:{
     backgroundColor: purple,
@@ -185,13 +218,12 @@ const styles = StyleSheet.create({
 
 // we get passed state and props, that has a navigation key
 function mapStateToProps(state, {navigation}){
-  const { deckId } = navigation.state.params
+  const { deckId } = navigation.state.params;
 
   return {
     deckId,
     deck: state[deckId]
   }
-
 }
 
 
